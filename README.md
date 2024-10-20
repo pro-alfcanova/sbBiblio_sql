@@ -1,5 +1,5 @@
 # sgBiblio
-Sistema Gerenciador de Bibliotecas e Salas de Leituras.
+Sistema Gerenciador de Bibliotecas e Salas de Leituras.<br>
 Utiliza um banco de dados SQL (usei MariaDB no XAMPP 8.2.12)
 
 # Baixar o XAMPP
