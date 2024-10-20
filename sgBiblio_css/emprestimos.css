@@ -1,0 +1,48 @@
+/* Tabelas para geração de relatórios */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+td {
+    border: 2px solid #ddd;
+    padding: 5px;
+}
+.label-cell {
+    width: 160px;
+    font-weight: bold;
+    text-align: right;
+}
+.data-cell {
+    width: calc(100% - 160px);
+    text-align: left;
+}
+.empty-row td {
+    border: none;
+}
+
+/* Estilos para impressão */
+@media print {
+    body * {
+        display: none !important;
+    }
+    #emprestimosTable, #emprestimosTable * {
+        display: block !important;
+        visibility: visible !important;
+    }
+    #emprestimosTable {
+        width: 100% !important;
+        margin: 0 auto !important;
+    }
+    .button-container, .close {
+        display: none !important;
+    }
+    @page {
+        size: portrait;
+        margin: 10mm;
+        counter-increment: page;
+        @top-center {
+            content: "Listagem de Empréstimos";
+        }
+    }
+}
