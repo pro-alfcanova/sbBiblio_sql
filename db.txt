@@ -1,0 +1,94 @@
+*** Criando e setando o banco de dados
+CREATE DATABASE sgBiblio;
+CREATE USER 'Admin@sgBiblio'@'localhost' IDENTIFIED BY 'Passwd@sgBiblio';
+GRANT ALL PRIVILEGES ON sgBiblio.* TO 'Admin@sgBiblio'@'localhost';
+USE sgBiblio;
+
+*** Modelando o banco de dados
+CREATE TABLE leitores (
+    codigoLeitor INT PRIMARY KEY,
+    nomeLeitor VARCHAR(255) NOT NULL,
+    funcaoLeitor VARCHAR(255) NOT NULL,
+    localLeitor VARCHAR(255) NOT NULL,
+    contatoLeitor VARCHAR(255)NOT NULL,
+    dataInclusao VARCHAR(21) NOT NULL,
+    dataExclusao VARCHAR(21)NOT NULL
+);
+
+INSERT INTO leitores (codigoLeitor, nomeLeitor, funcaoLeitor, localLeitor, contatoLeitor, dataInclusao, dataExclusao)
+VALUES 
+(1, 'Leitor 1', 'Aluno', 'Leitor 1', 'Leitor 1', '09:47:17 - 10/09/2024', '00:00:00 - 00/00/0000'),
+(2, 'Leitor 2', 'Comunidade', 'Leitor 2', 'Leitor 2', '09:47:58 - 10/09/2024', '00:00:00 - 00/00/0000'),
+(3, 'Leitor 3', 'Funcionário', 'Leitor 3', 'Leitor 3', '09:48:21 - 10/09/2024', '00:00:00 - 00/00/0000'),
+(4, 'Leitor 4', 'Outros', 'Leitor 4', 'Leitor 4', '09:48:41 - 10/09/2024', '13:20:31 - 16/09/2024'),
+(5, 'Leitor 5', 'Professor', 'Leitor 5', 'Leitor 5', '09:49:01 - 10/09/2024', '00:00:00 - 00/00/0000'),
+(6, 'Leitor 6', 'Aluno', 'Leitor 6', 'Leitor 6', '09:49:01 - 10/09/2024', '00:00:00 - 00/00/0000');
+
+
+
+CREATE TABLE livros (
+    codigoLivro INT NOT NULL AUTO_INCREMENT,
+    nomeLivro VARCHAR(255) NOT NULL,
+    nomeAutor VARCHAR(255) NOT NULL,
+    assuntosLivro VARCHAR(255) NOT NULL,
+    nomeEditora VARCHAR(255) NOT NULL,
+    numeroEdicao VARCHAR(50) NOT NULL,
+    localPublicacao VARCHAR(255) NOT NULL,
+    anoPublicacao INT NOT NULL,
+    numeroExemplar INT NOT NULL,
+    dataInclusao VARCHAR(21) NOT NULL,
+    dataExclusao VARCHAR(21) NOT NULL,
+    PRIMARY KEY (codigoLivro)
+);
+
+INSERT INTO livros (codigoLivro, nomeLivro, nomeAutor, assuntosLivro, nomeEditora, numeroEdicao, localPublicacao, anoPublicacao, numeroExemplar, dataInclusao, dataExclusao)
+VALUES 
+(1, 'Livro 1', 'Livro 1', 'Livro 1', 'Livro 1', 'Livro 1', 'Livro 1', 2010, 1, '09:55:57 - 10/09/2024', '09:59:00 - 10/09/2024'),
+(2, 'Livro 2', 'Livro 2', 'Livro 2', 'Livro 2', 'Livro 2', 'Livro 2', 2011, 1, '09:56:19 - 10/09/2024', '00:00:00 - 00/00/0000'),
+(3, 'Livro 3', 'Livro 3', 'Livro 3', 'Livro 3', 'Livro 3', 'Livro 3', 2012, 1, '09:56:43 - 10/09/2024', '00:00:00 - 00/00/0000'),
+(4, 'Livro 4', 'Livro 4', 'Livro 4', 'Livro 4', 'Livro 4', 'Livro 4', 2013, 1, '09:57:05 - 10/09/2024', '00:00:00 - 00/00/0000'),
+(5, 'Livro 5', 'Livro 5', 'Livro 5', 'Livro 5', 'Livro 5', 'Livro 5', 2014, 1, '09:57:32 - 10/09/2024', '00:00:00 - 00/00/0000'),
+(6, 'Livro 6', 'Livro 6', 'Livro 6', 'Livro 6', 'Livro 6', 'Livro 6', 2015, 1, '09:57:32 - 10/09/2024', '00:00:00 - 00/00/0000');
+
+
+
+CREATE TABLE emprestimos (
+    codigoEmprestimo INT PRIMARY KEY,
+    codigoLivro INT NOT NULL,
+    nomeLivro VARCHAR(255),
+    codigoLeitor INT NOT NULL,
+    nomeLeitor VARCHAR(255) NOT NULL,
+    dataRetirada VARCHAR(21) NOT NULL, 
+    dataDevolucao VARCHAR(21) NOT NULL,
+    dataEntrega VARCHAR(21) NOT NULL,
+    FOREIGN KEY (codigoLivro) REFERENCES Livros(codigoLivro),
+    FOREIGN KEY (codigoLeitor) REFERENCES Leitores(codigoLeitor)
+);
+
+INSERT INTO emprestimos (codigoEmprestimo, codigoLivro, nomeLivro, codigoLeitor, nomeLeitor, dataRetirada, dataDevolucao, dataEntrega)
+VALUES 
+(1, 2, 'Livro 2', 1, 'Leitor 1', '19:47:54 - 15/09/2024', '22:02:59 - 30/09/2024', '22:06:29 - 15/09/2024'),
+(2, 3, 'Livro 3', 2, 'Leitor 2', '20:28:17 - 15/09/2024', '23:49:22 - 23/09/2024', '00:00:00 - 00/00/0000'),
+(3, 4, 'Livro 4', 3, 'Leitor 3', '21:13:43 - 07/09/2024', '21:13:43 - 14/09/2024', '00:00:00 - 00/00/0000'),
+(4, 2, 'Livro 2', 5, 'Leitor 5', '22:18:35 - 16/09/2024', '23:26:50 - 30/09/2024', '00:00:00 - 00/00/0000');
+
+
+
+CREATE TABLE usuarios (
+    nomeUsuario VARCHAR(255) NOT NULL,
+    contatoUsuario VARCHAR(255) NOT NULL,
+    loginUsuario VARCHAR(255) NOT NULL UNIQUE,
+    senhaUsuario VARCHAR(255) NOT NULL,
+    dataInclusao VARCHAR(21) NOT NULL,
+    dataExclusao VARCHAR(21) NOT NULL,
+    PRIMARY KEY (loginUsuario)
+);
+
+INSERT INTO usuarios (nomeUsuario, contatoUsuario, loginUsuario, senhaUsuario, dataInclusao, dataExclusao)
+VALUES 
+('admin', 'admin', 'admin@2024', '@admin2024', '00:00:00 - 01/01/2024', '00:00:00 - 00/00/0000'),
+('Ususário02', 'Ususário02', 'user02', '@user02', '10:12:04 - 10/09/2024', '00:00:00 - 00/00/0000'),
+('Ususário03', 'Ususário03', 'user03', '@user03', '10:12:22 - 10/09/2024', '00:00:00 - 00/00/0000'),
+('Ususário04', 'Ususário04', 'user04', '@user04', '10:12:36 - 10/09/2024', '10:14:54 - 10/09/2024'),
+('Ususário05', 'Ususário05', 'user05', '@user05', '10:12:58 - 10/09/2024', '10:48:22 - 17/09/2024'),
+('Ususário06', 'Ususário06', 'user06', '@user06', '10:14:25 - 10/09/2024', '11:03:06 - 17/09/2024');
