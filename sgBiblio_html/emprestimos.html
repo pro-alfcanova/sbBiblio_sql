@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sistema de Gerenciamento de Bibliotecas - Empréstimos</title>
+
+        <!-- Estilos globais primeiro -->
+        <link rel="stylesheet" href="../sgBiblio_css/global.css">
+
+        <!-- Estilos de emprestimos -->
+        <link rel="stylesheet" href="../sgBiblio_css/emprestimos.css">
+
+        <!-- Script JavaScript globais com defer -->
+        <script src="../sgBiblio_js/global.js" defer></script>
+
+        <!-- Script JavaScript de emprestimos com defer -->
+        <script src="../sgBiblio_js/emprestimos.js" defer></script>
+
+        <!-- Biblioteca Google Charts -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </head>
+    <body>
+        <header>
+            EE Plínio Ferraz - Sistema de Gerenciamento de Bibliotecas
+        </header>
+
+        <div class="main-content" id="mainContent">
+            <nav id="menu">
+                <a href="#" onclick="openModal('modal_emprestimos_incluir')">Emprestar</a>
+                <a href="#" onclick="openModal('modal_emprestimos_alterar')">Renovar</a>
+                <a href="#" onclick="openModal('modal_emprestimos_excluir')">Devolver</a>
+                <a href="#" onclick="openModal('modal_emprestimos_consultar')">Consultar</a>
+                <a href="/sgBiblio/sgBiblio_html/index.html">Voltar</a>
+            </nav>
+                <div class="message">Gestão de empréstimos</div>
+        </div>
+
+        <!-- Modal de alerta de sucesso -->
+        <div id="modal_success" class="modalSuccess">
+            <div class="modalSuccess-content">
+                <span class="closeSuccess" onclick="closeModal('modal_success')">&times;</span>
+                <div class="modalSuccess-header">SUCESSO</div>
+                <div class="modalSuccess-body" id="successMessage">Mensagem de sucesso aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonSuccess" onclick="closeModal('modal_success')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de notificação -->
+        <div id="modal_notice" class="modalNotice">
+            <div class="modalNotice-content">
+                <span class="closeNotice" onclick="closeModal('modal_notice')">&times;</span>
+                <div class="modalNotice-header">ATENÇÃO</div>
+                <div class="modalNotice-body" id="noticeMessage">Mensagem de notificação aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonNotice" onclick="closeModal('modal_notice')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de erro -->
+        <div id="modal_error" class="modalError">
+            <div class="modalError-content">
+                <span class="closeError" onclick="closeModal('modal_error')">&times;</span>
+                <div class="modalError-header">ERRO</div>
+                <div class="modalError-body" id="errorMessage">Mensagem de erro aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonError" onclick="closeModal('modal_error')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Incluir Empréstimo -->
+        <div id="modal_emprestimos_incluir" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_emprestimos_incluir')">&times;</span>
+                <h2 style="text-align: center;">Realizar um empréstimo</h2>
+
+                <form id="formEmprestimosIncluir" action="#" method="POST">
+                    <div style="text-align: left; margin-left: 40px;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_emprestimo_incluir" style="width: 180px; text-align: right; padding-right: 10px;">Código do emprestimo:</label>
+                            <input type="text" style="width: 75px; background-color: rgba(173, 216, 230, 0.4); text-align: right;" id="codigo_emprestimo_incluir" name="codigo_emprestimo_incluir" min="1" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_livro_emprestimo_incluir" style="width: 180px; text-align: right; padding-right: 10px;">Código do livro:</label>
+                                <input type="text" style="width: 75px; text-align: right;" id="codigo_livro_emprestimo_incluir" name="codigo_livro_emprestimo_incluir" min="1" required>
+                                <input type="text" style="width: 360px; text-align: left; margin-left: 10px; background-color: rgba(173, 216, 230, 0.4);" id="nome_livro_emprestimo_incluir" name="nome_livro_emprestimo_incluir" placeholder= "Digite o código do livro" required readonly>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="pesquisarLivroEmprestimoIncluir()">Pesquisar livro</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_leitor_emprestimo_incluir" style="width: 180px; text-align: right; padding-right: 10px;">Código do leitor:</label>
+                            <input type="text" style="width: 75px; text-align: right;" id="codigo_leitor_emprestimo_incluir" name="codigo_leitor_incluir" min="1" required>
+                            <input type="text" style="width: 360px; text-align: left; margin-left: 10px; background-color: rgba(173, 216, 230, 0.4);" id="nome_leitor_emprestimo_incluir" name="nome_leitor_emprestimo_incluir" placeholder= "Digite o RA do aluno" required readonly>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="pesquisarLeitorEmprestimoIncluir()">Pesquisar leitor</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="data_retirada_incluir" style="width: 180px; text-align: right; padding-right: 10px;">Data da retirada:</label>
+                            <input type="date" style="width: 110px; background-color: rgba(173, 216, 230, 0.4);" id="data_retirada_incluir" name="data_retirada_incluir" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="data_devolucao_incluir" style="width: 180px; text-align: right; padding-right: 10px;">Data da devolução:</label>
+                            <input type="date" style="width: 110px; " id="data_devolucao_incluir" name="data_devolucao_incluir" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioIncluirEmprestimo()">Emprestar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Alterar Empréstimo-->
+        <div id="modal_emprestimos_alterar" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_emprestimos_alterar')">&times;</span>
+                <h2 style="text-align: center;">Renovar um empréstimo</h2>
+
+                <form id="formEmprestimosAlterar" action="#" method="POST">
+                    <div style="text-align: left; margin-left: 40px;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_emprestimo_alterar" style="width: 180px; text-align: right; padding-right: 10px;">Código do emprestimo:</label>
+                            <input type="text" style="width: 75px; text-align: right;" id="codigo_emprestimo_alterar" name="codigo_emprestimo_alterar" min="1" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="buscarEmprestimoAlterar()">Buscar empréstimo</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_livro_emprestimo_alterar" style="width: 180px; text-align: right; padding-right: 10px;">Código do livro:</label>
+                            <input type="text" style="width: 75px; text-align: right; background-color: rgba(173, 216, 230, 0.4);" id="codigo_livro_emprestimo_alterar" name="codigo_livro_emprestimo_alterar" required readonly>
+                            <input type="text" style="width: 360px; text-align: left; margin-left: 10px; background-color: rgba(173, 216, 230, 0.4);" id="nome_livro_emprestimo_alterar" name="nome_livro_emprestimo_alterar" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_leitor_emprestimo_alterar" style="width: 180px; text-align: right; padding-right: 10px;">Código do leitor:</label>
+                            <input type="text" style="width: 75px; text-align: right; background-color: rgba(173, 216, 230, 0.4);" id="codigo_leitor_emprestimo_alterar" name="codigo_leitor_alterar" required readonly>
+                            <input type="text" style="width: 360px; text-align: left; margin-left: 10px; background-color: rgba(173, 216, 230, 0.4);" id="nome_leitor_emprestimo_alterar" name="nome_leitor_emprestimo_alterar" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="data_retirada_alterar" style="width: 180px; text-align: right; padding-right: 10px;">Data da retirada:</label>
+                            <input type="date" style="width: 110px; background-color: rgba(173, 216, 230, 0.4);" id="data_retirada_alterar" name="data_retirada_alterar" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="data_devolucao_alterar" style="width: 180px; text-align: right; padding-right: 10px;">Data da devolução:</label>
+                            <input type="date" style="width: 110px;" id="data_devolucao_alterar" name="data_devolucao_alterar" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioAlterarEmprestimo()">Renovar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Excluir -->
+        <div id="modal_emprestimos_excluir" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_emprestimos_excluir')">&times;</span>
+                <h2 style="text-align: center;">Devolver um empréstimo</h2>
+
+                <form id="formEmprestimosExcluir" action="#" method="POST">
+                    <div style="text-align: left; margin-left: 40px;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                           <label for="codigo_emprestimo_excluir" style="width: 180px; text-align: right; padding-right: 10px;">Código do emprestimo:</label>
+                           <input type="text" style="width: 75px; text-align: right;" id="codigo_emprestimo_excluir" name="codigo_emprestimo_excluir" min="1" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="buscarEmprestimoExcluir()">Buscar empréstimo</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_livro_emprestimo_excluir" style="width: 180px; text-align: right; padding-right: 10px;">Código do livro:</label>
+                            <input type="text" style="width: 75px; background-color: rgba(173, 216, 230, 0.4); text-align: right;" id="codigo_livro_emprestimo_excluir" name="codigo_livro_emprestimo_excluir" required readonly>
+                            <input type="text" style="width: 360px; background-color: rgba(173, 216, 230, 0.4); text-align: left; margin-left: 10px;" id="nome_livro_emprestimo_excluir" name="nome_livro_emprestimo_excluir" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="codigo_leitor_emprestimo_excluir" style="width: 180px; text-align: right; padding-right: 10px;">Código do leitor:</label>
+                            <input type="text" style="width: 75px; background-color: rgba(173, 216, 230, 0.4); text-align: right;" id="codigo_leitor_emprestimo_excluir" name="codigo_leitor_excluir" required readonly>
+                            <input type="text" style="width: 360px; background-color: rgba(173, 216, 230, 0.4); text-align: left; margin-left: 10px;" id="nome_leitor_emprestimo_excluir" name="nome_leitor_emprestimo_excluir" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="data_retirada_excluir" style="width: 180px; text-align: right; padding-right: 10px;">Data da retirada:</label>
+                            <input type="date" style="width: 110px; background-color: rgba(173, 216, 230, 0.4);" id="data_retirada_excluir" name="data_retirada_excluir" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="data_devolucao_excluir" style="width: 180px; text-align: right; padding-right: 10px;">Data da devolução:</label>
+                            <input type="date" style="width: 110px; background-color: rgba(173, 216, 230, 0.4);" id="data_devolucao_excluir" name="data_devolucao_excluir" required readonly>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioExcluirEmprestimo()">Devolver</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Consultar Emprestimos-->
+        <div id="modal_emprestimos_consultar" class="modal">
+            <div class="modal-content" style="max-width: 1500px;">
+                <span class="close" onclick="closeModal('modal_emprestimos_consultar')">&times;</span>
+                <h2 style="text-align: center;">Consultar empréstimos no sistema</h2>
+
+               <div style="text-align: center;">
+                   <input type="checkbox" id="abertosCheckbox" name="filtro" value="Abertos" checked onclick="desmarcarOutras(this)">
+                   <label for="abertosCheckbox">Abertos</label>
+                   <input type="checkbox" id="atrasadosCheckbox" name="filtro" value="Atrasados" onclick="desmarcarOutras(this)">
+                   <label for="atrasadosCheckbox">Atrasados</label>
+                   <input type="checkbox" id="entreguesCheckbox" name="filtro" value="Entregues" onclick="desmarcarOutras(this)">
+                   <label for="entreguesCheckbox">Entregues</label>   
+                   <input type="checkbox" id="todosCheckbox" name="filtro" value="Total" onclick="desmarcarOutras(this)">
+                   <label for="todosCheckbox">Todos</label>
+               </div>
+
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" onclick="pesquisarEmprestimos()">Pesquisar</button>
+                </div>
+
+                <hr style="margin: 10px 0;">
+
+                <table id="emprestimosTable" style="text-align: center; margin-top: 10px;">
+                    <tbody>
+                        <!-- As informações dos empréstimos serão inseridas aqui pelo JavaScript -->
+                    </tbody>
+                </table>
+
+                <div class="button-container" style="text-align: center; margin-top: 0px;">
+                    <button type="button" style="margin-right: 50px;" onclick="imprimirTabelaEmprestimos()">Imprimir</button>
+                    <button type="button" onclick="closeModal('modal_emprestimos_consultar')">Fechar</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            &copy; Desenvolvido para o Projeto Integrador I - UNIVESP - 2024
+        </footer>
+
+        <script>
+
+        </script>
+    </body>
+</html>

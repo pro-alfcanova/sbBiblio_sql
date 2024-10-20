@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sistema de Gerenciamento de Bibliotecas</title>
+
+        <!-- Estilos globais primeiro -->
+        <link rel="stylesheet" href="/sgBiblio/sgBiblio_css/global.css">
+
+        <!-- Script JavaScript globais com defer -->
+        <script src="/sgBiblio/sgBiblio_js/global.js" defer></script>
+
+        <!-- Biblioteca Google Charts -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </head>
+    <body onload="verificarAutenticacao()">
+        <header>
+            EE Plínio Ferraz - Sistema de Gerenciamento de Bibliotecas
+        </header>
+
+        <div class="main-content" id="mainContent">
+            <nav id="menu">
+                <a href="/sgBiblio/sgBiblio_html/leitores.html">Leitores</a>
+                <a href="/sgBiblio/sgBiblio_html/livros.html">Livros</a>
+                <a href="/sgBiblio/sgBiblio_html/emprestimos.html">Empréstimos</a>
+                <a href="/sgBiblio/sgBiblio_html/usuarios.html">Usuários</a>
+                <a href="#" onclick="resetModal('modal_usuario_autenticar')">Sair</a>
+            </nav>
+            <div class="message">Aguardando...</div>
+        </div>
+
+        <!-- Modal Autorização de Usuário -->
+        <div id="modal_usuario_autenticar" class="modal">
+            <div class="modal-content" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+
+                <form id="formUsuarioAutenticar" action="#" method="POST">
+				    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <input type="text" style="width: 150px; text-align: center; font-weight: bold" id="login_usuario_autenticar" name="login_usuario_autenticar" placeholder="Usuário" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <input type="password" style="width: 150px; text-align: center; font-weight: bold" id="senha_usuario_autenticar" name="senha_usuario_autenticar" placeholder="Senha" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioUsuarioAutenticar()">Acessar sistema</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de sucesso -->
+        <div id="modal_success" class="modalSuccess">
+            <div class="modalSuccess-content">
+                <span class="closeSuccess" onclick="closeModal('modal_success')">&times;</span>
+                <div class="modalSuccess-header">SUCESSO</div>
+                <div class="modalSuccess-body" id="successMessage">Mensagem de sucesso aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonSuccess" onclick="closeModal('modal_success')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de notificação -->
+        <div id="modal_notice" class="modalNotice">
+            <div class="modalNotice-content">
+                <span class="closeNotice" onclick="closeModal('modal_notice')">&times;</span>
+                <div class="modalNotice-header">ATENÇÃO</div>
+                <div class="modalNotice-body" id="noticeMessage">Mensagem de notificação aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonNotice" onclick="closeModal('modal_notice')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de erro -->
+        <div id="modal_error" class="modalError">
+            <div class="modalError-content">
+                <span class="closeError" onclick="closeModal('modal_error')">&times;</span>
+                <div class="modalError-header">ERRO</div>
+                <div class="modalError-body" id="errorMessage">Mensagem de erro aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonError" onclick="closeModal('modal_error')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            &copy; Desenvolvido para o Projeto Integrador I - UNIVESP - 2024
+        </footer>
+
+        <script>
+
+        </script>
+    </body>
+</html>

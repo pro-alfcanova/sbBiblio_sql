@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sistema de Gerenciamento de Bibliotecas - Usuários</title>
+
+        <!-- Estilos globais primeiro -->
+        <link rel="stylesheet" href="../sgBiblio_css/global.css">
+
+        <!-- Estilos de usuarios -->
+        <link rel="stylesheet" href="../sgBiblio_css/usuarios.css">
+
+        <!-- Script JavaScript globais com defer -->
+        <script src="../sgBiblio_js/global.js" defer></script>
+
+        <!-- Script JavaScript de usuarios com defer -->
+        <script src="../sgBiblio_js/usuarios.js" defer></script>
+
+        <!-- Biblioteca Google Charts -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </head>
+    <body>
+        <header>
+            EE Plínio Ferraz - Sistema de Gerenciamento de Bibliotecas
+        </header>
+
+        <div class="main-content" id="mainContent">
+            <nav id="menu">
+                <a href="#" onclick="openModal('modal_usuarios_incluir')">Incluir</a>
+                <a href="#" onclick="openModal('modal_usuarios_alterar')">Alterar</a>
+                <a href="#" onclick="openModal('modal_usuarios_excluir')">Excluir</a>
+                <a href="#" onclick="openModal('modal_usuarios_consultar')">Consultar</a>
+                <a href="/sgBiblio/sgBiblio_html/index.html">Voltar</a>
+            </nav>
+            <div class="message">Gestão dos usuários</div>
+        </div>
+
+        <!-- Modal de alerta de sucesso -->
+        <div id="modal_success" class="modalSuccess">
+            <div class="modalSuccess-content">
+                <span class="closeSuccess" onclick="closeModal('modal_success')">&times;</span>
+                <div class="modalSuccess-header">SUCESSO</div>
+                <div class="modalSuccess-body" id="successMessage">Mensagem de sucesso aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonSuccess" onclick="closeModal('modal_success')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de notificação -->
+        <div id="modal_notice" class="modalNotice">
+            <div class="modalNotice-content">
+                <span class="closeNotice" onclick="closeModal('modal_notice')">&times;</span>
+                <div class="modalNotice-header">ATENÇÃO</div>
+                <div class="modalNotice-body" id="noticeMessage">Mensagem de notificação aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonNotice" onclick="closeModal('modal_notice')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de alerta de erro -->
+        <div id="modal_error" class="modalError">
+            <div class="modalError-content">
+                <span class="closeError" onclick="closeModal('modal_error')">&times;</span>
+                <div class="modalError-header">ERRO</div>
+                <div class="modalError-body" id="errorMessage">Mensagem de erro aqui</div>
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" class="buttonError" onclick="closeModal('modal_error')">FECHAR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Incluir Usuários -->
+        <div id="modal_usuarios_incluir" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_usuarios_incluir')">&times;</span>
+                <h2 style="text-align: center;">Incluir cadastro de usuário no sistema</h2>
+
+                <form id="formUsuariosIncluir" action="#" method="POST">
+                    <div style="max-width: 80%; text-align: left; margin: 0 auto;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="nome_usuario_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Nome do usuário:</label>
+                            <input type="text" style="width: 360px;" id="nome_usuario_incluir" name="nome_usuario_incluir" placeholder="Insira o nome completo do usuário" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="contato_usuario_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Contato do usuário:</label>
+                            <input type="text" style="width: 360px;" id="contato_usuario_incluir" name="contato_usuario_incluir" placeholder="Insira o telefone e/ou e-mail (separados por ;)" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="login_usuario_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Login do usuário:</label>
+                            <input type="text" style="width: 360px;" id="login_usuario_incluir" name="login_usuario_incluir" placeholder="Insira o login do usuário" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="senha1_usuario_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Digite a senha:</label>
+                            <input type="password" style="width: 75px;" id="senha1_usuario_incluir" name="senha1_usuario_incluir" placeholder="Senha" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="senha2_usuario_incluir" style="width: 150px; text-align: right; padding-right: 10px;">Confirme a senha:</label>
+                            <input type="password" style="width: 75px;" id="senha2_usuario_incluir" name="senha2_usuario_incluir" placeholder="Novamente" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioIncluirUsuario()">Incluir</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Alterar Usuários -->
+        <div id="modal_usuarios_alterar" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_usuarios_alterar')">&times;</span>
+                <h2 style="text-align: center;">Alterar cadastro de usuário no sistema</h2>
+
+                <form id="formUsuariosAlterar" action="#" method="POST">
+                    <div style="max-width: 80%; text-align: left; margin: 0 auto;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="nome_usuario_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Nome do usuário:</label>
+                            <input type="text" style="width: 360px;" id="nome_usuario_alterar" name="nome_usuario_alterar" placeholder="Insira o nome completo do usuário" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button id="buscarUsuariosAlterarBotao" type="button" onclick="buscarUsuarioAlterar()">Buscar usuário</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="contato_usuario_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Contato do usuário:</label>
+                            <input type="text" style="width: 360px;" id="contato_usuario_alterar" name="contato_usuario_alterar" placeholder="Atualize as informações de contato" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="login_usuario_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Login do usuário:</label>
+                            <input type="text" style="width: 360px; background-color: rgba(173, 216, 230, 0.4);" id="login_usuario_alterar" name="login_usuario_alterar" placeholder="Atualize o login do usuário" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="senha1_usuario_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Nova senha:</label>
+                            <input type="password" style="width: 75px;" id="senha1_usuario_alterar" name="senha1_usuario_alterar" placeholder="Senha" required>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="senha2_usuario_alterar" style="width: 150px; text-align: right; padding-right: 10px;">Confirme a senha:</label>
+                            <input type="password" style="width: 75px;" id="senha2_usuario_alterar" name="senha2_usuario_alterar" placeholder="Novamente" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button id="enviarAlterarBotao" type="button" onclick="enviarFormularioAlterarUsuario()">Alterar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Excluir Usuários -->
+        <div id="modal_usuarios_excluir" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal_usuarios_excluir')">&times;</span>
+                <h2 style="text-align: center;">Excluir cadastro de usuário no sistema</h2>
+
+                <form id="formUsuariosExcluir" action="#" method="POST">
+                    <div style="max-width: 80%; text-align: left; margin: 0 auto;">
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="nome_usuario_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Nome do usuário:</label>
+                            <input type="text" style="width: 360px;" id="nome_usuario_excluir" name="nome_usuario_excluir" placeholder="Insira o nome completo do usuário" required>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button id="buscarUsuariosExcluirBotao" type="button" onclick="buscarUsuarioExcluir()">Buscar usuário</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="contato_usuario_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Contato do usuário:</label>
+                            <input type="text" style="width: 360px; background-color: rgba(173, 216, 230, 0.4);" id="contato_usuario_excluir" name="contato_usuario_excluir" placeholder="Confirme a informação antes da exclusão" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="login_usuario_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Digite a senha:</label>
+                            <input type="text" style="width: 360px; background-color: rgba(173, 216, 230, 0.4);" id="login_usuario_excluir" name="login_usuario_excluir" placeholder="Confirme a informação antes da exclusão" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="senha1_usuario_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Digite a senha:</label>
+                            <input type="password" style="width: 75px; background-color: rgba(173, 216, 230, 0.4);" id="senha1_usuario_excluir" name="senha1_usuario_excluir" placeholder="Confirme" required readonly>
+                        </div>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <label for="senha2_usuario_excluir" style="width: 150px; text-align: right; padding-right: 10px;">Confirme a senha:</label>
+                            <input type="password" style="width: 75px; background-color: rgba(173, 216, 230, 0.4);" id="senha2_usuario_excluir" name="senha2_usuario_excluir" placeholder="Confirme" required readonly>
+                        </div>
+
+                        <div class="button-container" style="text-align: center; margin-top: 10px;">
+                            <button type="button" onclick="enviarFormularioExcluirUsuario()">Excluir</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Consultar Usuários -->
+        <div id="modal_usuarios_consultar" class="modal">
+            <div class="modal-content" style="max-width: 1500px;">
+                <span class="close" onclick="closeModal('modal_usuarios_consultar')">&times;</span>
+                <h2 style="text-align: center;">Consultar cadastro de usuários no sistema</h2>
+
+                <div style="text-align: center;">
+                    <input type="checkbox" id="ativosCheckbox" name="filtro" value="Ativos" checked onclick="desmarcarOutras(this)">
+                    <label for="ativosCheckbox">Ativos</label>
+                    <input type="checkbox" id="excluidosCheckbox" name="filtro" value="Excluidos" onclick="desmarcarOutras(this)">
+                    <label for="excluidosCheckbox">Excluídos</label>
+                    <input type="checkbox" id="todosCheckbox" name="filtro" value="Total" onclick="desmarcarOutras(this)">
+                    <label for="todosCheckbox">Todos</label>
+                </div>
+
+                <div class="button-container" style="text-align: center; margin-top: 10px;">
+                    <button type="button" onclick="pesquisarUsuarios()">Pesquisar</button>
+                </div>
+
+                <hr style="margin: 10px 0;">
+
+                <table id="usuariosTable" style="text-align: center; margin-top: 10px;">
+                    <tbody>
+                        <!-- As informações dos usuários serão inseridas aqui pelo JavaScript -->
+                    </tbody>
+                </table>
+
+                <div class="button-container" style="text-align: center; margin-top: 0px;">
+                    <button type="button" style="margin-right: 50px;" onclick="imprimirTabelaUsuarios()">Imprimir</button>
+                    <button type="button" onclick="closeModal('modal_usuarios_consultar')">Fechar</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            &copy; Desenvolvido para o Projeto Integrador I - UNIVESP - 2024
+        </footer>
+
+        <script>
+
+        </script>
+    </body>
+</html>
